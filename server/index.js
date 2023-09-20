@@ -24,15 +24,15 @@ conexion.connect(function (error) {
 
 app.post("/create", (req, res) => {
 	// datos que nos envian desde el form
-	const nombre = req.body.nombre;
-	const edad = req.body.edad;
-	const pais = req.body.pais;
+	const name = req.body.name;
+	const age = req.body.age;
+	const country = req.body.country;
 	const cargo = req.body.cargo;
-	const anios = req.body.anios;
+	const salario = req.body.salario;
 
 	conexion.query(
-		"INSERT INTO empleados (nombre, edad, pais, cargo, anios) VALUES (?,?,?,?,?)",
-		[nombre, edad, pais, cargo, anios],
+		"INSERT INTO empleados (name, age, country, cargo, salario) VALUES (?,?,?,?,?)",
+		[name, age, country, cargo, salario],
 		(err, result) => {
 			if (err) {
 				console.log(err);
@@ -55,16 +55,16 @@ app.get("/empleados", (req, res) => {
 
 app.put("/update", (req, res) => {
 	// datos que nos envian desde el form
-	const idempleado = req.body.idempleado;
-	const nombre = req.body.nombre;
-	const edad = req.body.edad;
-	const pais = req.body.pais;
+	const id = req.body.id;
+	const name = req.body.name;
+	const age = req.body.age;
+	const country = req.body.country;
 	const cargo = req.body.cargo;
-	const anios = req.body.anios;
+	const salario = req.body.salario;
 
 	conexion.query(
-		"UPDATE empleados SET nombre=?, edad=?, pais=?, cargo=?, anios=? WHERE idempleado=?",
-		[nombre, edad, pais, cargo, anios, idempleado],
+		"UPDATE empleados SET name=?, age=?, country=?, cargo=?, salario=? WHERE id=?",
+		[name, age, country, cargo, salario, id],
 		(err, result) => {
 			if (err) {
 				console.log(err);
@@ -75,13 +75,13 @@ app.put("/update", (req, res) => {
 	);
 });
 
-app.delete("/delete/:idempleado", (req, res) => {
+app.delete("/delete/:id", (req, res) => {
 	// id enviado mediante parametros
-	const idempleado = req.params.idempleado;
+	const id = req.params.id;
 
 	conexion.query(
-		"DELETE from empleados WHERE idempleado=?",
-		idempleado,
+		"DELETE from empleados WHERE id=?",
+		id,
 		(err, result) => {
 			if (err) {
 				console.log(err);
@@ -92,7 +92,7 @@ app.delete("/delete/:idempleado", (req, res) => {
 	);
 });
 
-app.listen(3001, () => {
+app.listen(3310, () => {
 	console.log("El servidor esta en línea");
 });
 

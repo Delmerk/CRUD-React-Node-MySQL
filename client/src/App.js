@@ -2,29 +2,30 @@ import { useState } from "react";
 import Axios from "axios";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Swal from "sweetalert2";
+const Swal = require("sweetalert2");
+// import Swal from "sweetalert2";
 // CREADO POR DELMERK ESCOBAR SOLARTE
 // Con ayuda de este tutorial y documentación: https://www.youtube.com/watch?v=U1u2jNYXmBw
 
 function App() {
-	const [nombre, setNombre] = useState("");
-	const [edad, setEdad] = useState();
-	const [pais, setPais] = useState("");
+	const [name, setName] = useState("");
+	const [age, setAge] = useState();
+	const [country, setCountry] = useState("");
 	const [cargo, setCargo] = useState("");
-	const [anios, setAnios] = useState();
-	const [idempleado, setIdEmpleado] = useState();
+	const [salario, setSalario] = useState();
+	const [id, setIdEmpleado] = useState();
 
 	const [editar, setEditar] = useState(false);
 
 	const [empleadosList, setEmpleados] = useState([]);
 
 	const addEmpleados = () => {
-		Axios.post("http://localhost:3001/create", {
-			nombre: nombre,
-			edad: edad,
-			pais: pais,
+		Axios.post("http://localhost:3310/create", {
+			name: name,
+			age: age,
+			country: country,
 			cargo: cargo,
-			anios: anios,
+			salario: salario,
 		}).then(() => {
 			getEmpleados();
 			cleanFields();
@@ -32,7 +33,7 @@ function App() {
 				title: "<strong>Registro exitoso!</strong>",
 				html:
 					"<i>El empleado <strong>" +
-					nombre +
+					name +
 					"</strong> fue registrado satisfactoriamente.</i>",
 				icon: "success",
 				timer: 2000,
@@ -51,13 +52,13 @@ function App() {
 	};
 
 	const updateEmpleados = () => {
-		Axios.put("http://localhost:3001/update", {
-			idempleado: idempleado,
-			nombre: nombre,
-			edad: edad,
-			pais: pais,
+		Axios.put("http://localhost:3310/update", {
+			id: id,
+			name: name,
+			age: age,
+			country: country,
 			cargo: cargo,
-			anios: anios,
+			salario: salario,
 		}).then(() => {
 			getEmpleados();
 			cleanFields();
@@ -65,7 +66,7 @@ function App() {
 				title: "<strong>Actualización exitosa!</strong>",
 				html:
 					"<i>El empleado <strong>" +
-					nombre +
+					name +
 					"</strong> fue actualizado satisfactoriamente.</i>",
 				icon: "success",
 				timer: 3000,
@@ -89,7 +90,7 @@ function App() {
 			title: "<strong>Confirmar Borrado</strong>",
 			html:
 				"<i>¿Desea eliminar al empleado <strong>" +
-				value.nombre +
+				value.name +
 				"</strong>?</i>",
 			icon: "warning",
 			//El si debe estar en segunda position. el primero se lo toma como false y segundo como true
@@ -99,13 +100,13 @@ function App() {
 			confirmButtonText: "Si, eliminarlo.",
 		}).then((result) => {
 			if (result.isConfirmed) {
-				Axios.delete(`http://localhost:3001/delete/${value.idempleado}`)
+				Axios.delete(`http://localhost:3310/delete/${value.id}`)
 					.then(() => {
 						getEmpleados();
 						cleanFields();
 						Swal.fire({
 							title: "Eliminado!",
-							text: value.nombre + " eliminado satisfactoriamente.",
+							text: value.name + " eliminado satisfactoriamente.",
 							icon: "success",
 							timer: 2500,
 						});
@@ -146,19 +147,17 @@ function App() {
 			})
 			.then((result) => {
 				if (result.isConfirmed) {
-					Axios.delete(`http://localhost:3001/delete/${value.idempleado}`).then(
-						() => {
-							getEmpleados();
-							cleanFields();
-							swalWithBootstrapButtons.fire(
-								"Eliminado!",
-								"El empleado <strong>" +
-									value.nombre +
-									"</strong> fue eliminado correctamente.",
-								"success"
-							);
-						}
-					);
+					Axios.delete(`http://localhost:3310/delete/${value.id}`).then(() => {
+						getEmpleados();
+						cleanFields();
+						swalWithBootstrapButtons.fire(
+							"Eliminado!",
+							"El empleado <strong>" +
+								value.name +
+								"</strong> fue eliminado correctamente.",
+							"success"
+						);
+					});
 				} else if (
 					/* Read more about handling dismissals below */
 					result.dismiss === Swal.DismissReason.cancel
@@ -184,18 +183,18 @@ function App() {
 	};
 
 	const cleanFields = () => {
-		setNombre("");
-		setEdad("");
-		setPais("");
+		setName("");
+		setAge("");
+		setCountry("");
 		setCargo("");
-		setAnios("");
+		setSalario("");
 		setIdEmpleado("");
 
 		setEditar(false);
 	};
 
 	const getEmpleados = () => {
-		Axios.get("http://localhost:3001/empleados").then((response) => {
+		Axios.get("http://localhost:3310/empleados").then((response) => {
 			setEmpleados(response.data);
 		});
 	};
@@ -204,15 +203,15 @@ function App() {
 	const actualizarEmpleado = (value) => {
 		setEditar(true);
 
-		setNombre(value.nombre);
-		setEdad(value.edad);
-		setPais(value.pais);
+		setName(value.name);
+		setAge(value.age);
+		setCountry(value.country);
 		setCargo(value.cargo);
-		setAnios(value.anios);
-		setIdEmpleado(value.idempleado);
+		setSalario(value.salario);
+		setIdEmpleado(value.id);
 	};
 
-	getEmpleados();
+	// getEmpleados();
 
 	return (
 		<div className="container">
@@ -226,12 +225,12 @@ function App() {
 						<input
 							/* event tiene el valor del input o campo - lo que ingreso el user */
 							onChange={(event) => {
-								setNombre(event.target.value);
+								setName(event.target.value);
 							}}
-							value={nombre}
+							value={name}
 							type="text"
 							className="form-control"
-							placeholder="Nombre"
+							placeholder="Luz Piedad"
 							aria-label="Username"
 							aria-describedby="basic-addon1"
 						/>
@@ -242,13 +241,13 @@ function App() {
 						</span>
 						<input
 							onChange={(event) => {
-								setEdad(event.target.value);
+								setAge(event.target.value);
 							}}
-							value={edad}
+							value={age}
 							type="number"
 							className="form-control"
-							placeholder="Edad"
-							aria-label="edad"
+							placeholder="20"
+							aria-label="age"
 							aria-describedby="basic-addon1"
 						/>
 					</div>
@@ -258,13 +257,13 @@ function App() {
 						</span>
 						<input
 							onChange={(event) => {
-								setPais(event.target.value);
+								setCountry(event.target.value);
 							}}
-							value={pais}
+							value={country}
 							type="text"
 							className="form-control"
-							placeholder="Pais"
-							aria-label="Pais"
+							placeholder="Colombia"
+							aria-label="Country"
 							aria-describedby="basic-addon1"
 						/>
 					</div>
@@ -290,13 +289,13 @@ function App() {
 						</span>
 						<input
 							onChange={(event) => {
-								setAnios(event.target.value);
+								setSalario(event.target.value);
 							}}
-							value={anios}
+							value={salario}
 							type="text"
 							className="form-control"
-							placeholder="Años"
-							aria-label="anios"
+							placeholder="3.000.000"
+							aria-label="salario"
 							aria-describedby="basic-addon1"
 						/>
 					</div>
@@ -316,15 +315,18 @@ function App() {
 							Registrar
 						</button>
 					)}
+					<button className="btn btn-warning m-2" onClick={getEmpleados}>
+						Get Employee
+					</button>
 				</div>
 			</div>
 			<table className="table table-striped">
 				<thead>
 					<tr>
 						<th scope="col">#</th>
-						<th scope="col">Nombre</th>
-						<th scope="col">Edad</th>
-						<th scope="col">Pais</th>
+						<th scope="col">Name</th>
+						<th scope="col">Age</th>
+						<th scope="col">Country</th>
 						<th scope="col">Cargo</th>
 						<th scope="col">Años Experiencia</th>
 						<th scope="col">Acciones</th>
@@ -336,13 +338,13 @@ function App() {
 						empleadosList.map((value, key) => {
 							// lo que va ha hacer cuando tenga un element
 							return (
-								<tr key={value.idempleado}>
-									<th>{value.idempleado}</th>
-									<td>{value.nombre}</td>
-									<td>{value.edad}</td>
-									<td>{value.pais}</td>
+								<tr key={value.id}>
+									<th>{value.id}</th>
+									<td>{value.name}</td>
+									<td>{value.age}</td>
+									<td>{value.country}</td>
 									<td>{value.cargo}</td>
-									<td>{value.anios}</td>
+									<td>{value.salario}</td>
 									<td>
 										<div
 											className="btn-group"
