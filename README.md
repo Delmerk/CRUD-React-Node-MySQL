@@ -18,3 +18,6 @@ git push -u origin main
 git remote add origin https://github.com/Delmerk/CRUD-React-Node-MySQL.git
 git branch -M main
 git push -u origin main
+
+https://github.com/sweetalert2/sweetalert2/issues/390
+https://stackoverflow.com/questions/71849415/i-cannot-add-the-parent-directory-to-safe-directory-in-git

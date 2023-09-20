@@ -234,7 +234,7 @@ function App() {
 							value={name}
 							type="text"
 							className="form-control"
-							placeholder="Luz Piedad"
+							placeholder="Luz"
 							aria-label="Username"
 							aria-describedby="basic-addon1"
 						/>
