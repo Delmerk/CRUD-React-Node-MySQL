@@ -26,18 +26,21 @@ function App() {
 			country: country,
 			cargo: cargo,
 			salario: salario,
-		}).then(() => {
-			getEmpleados();
-			cleanFields();
-			Swal.fire({
-				title: "<strong>Registro exitoso!</strong>",
-				html:
-					"<i>El empleado <strong>" +
-					name +
-					"</strong> fue registrado satisfactoriamente.</i>",
-				icon: "success",
-				timer: 2000,
-			}).catch(function (error) {
+		})
+			.then(() => {
+				getEmpleados();
+				cleanFields();
+				Swal.fire({
+					title: "<strong>Registro exitoso!</strong>",
+					html:
+						"<i>El empleado <strong>" +
+						name +
+						"</strong> fue registrado satisfactoriamente.</i>",
+					icon: "success",
+					timer: 2000,
+				});
+			})
+			.catch(function (error) {
 				Swal.fire({
 					icon: "error",
 					title: "Oops...",
@@ -48,7 +51,6 @@ function App() {
 							: JSON.parse(JSON.stringify(error)).message,
 				});
 			});
-		});
 	};
 
 	const updateEmpleados = () => {
